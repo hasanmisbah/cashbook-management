@@ -17,7 +17,7 @@ class CreateLoansTable extends Migration
             $table->id();
             $table->foreignId('user_id')
                 ->nullable()
-                ->constrained('users');
+                ->constrained('customers');
             $table->integer('amount');
             $table->string('description');
             $table->integer('status')->default(0);

@@ -15,11 +15,14 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('user_id')
                 ->nullable()
-                ->constrained('users');
+                ->constrained('customers');
+
             $table->integer('amount');
             $table->integer('discount')->default(0);
+
             $table->json('summery')->nullable()
                 ->comment('will do it later');
             $table->string('description')
