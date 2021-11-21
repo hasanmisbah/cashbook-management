@@ -1,3 +1,4 @@
+import { useRoute } from "vue-router";
 
 export const getFromLocalStorage = (key, decode = true) => {
     const value = localStorage.getItem(key);
@@ -17,6 +18,7 @@ export const pullFromLocalStorage = (key, decode = true) => {
 };
 
 export const setToLocalStorage = (key, value, encode = true) => {
+
     const finalValue = encode
         ? JSON.stringify(value)
         : value
@@ -27,3 +29,24 @@ export const setToLocalStorage = (key, value, encode = true) => {
     return finalValue;
 };
 
+/**
+ * @param routeName {string | Array}
+ * @param namedRoute {boolean}
+ * @return {boolean}
+ */
+export const isActiveRoute = (routeName, namedRoute = true) => {
+
+    if (!routeName) return false;
+
+    let route = useRoute();
+
+    if (!namedRoute){
+        return routeName instanceof String
+        ? route.path === routeName
+        : routeName.includes(route.path);
+    }
+
+    return routeName instanceof String
+        ? routeName === route.name
+        : routeName.includes(route.name);
+};

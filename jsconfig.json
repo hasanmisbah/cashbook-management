@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./resources/admin"]
+        }
+    },
+    "include": ["./resources/admin/**/*"],
+    "exclude": ["dotenv"],
+    "alias" : {
+        "@" : "./resources/admin"
+    }
+}

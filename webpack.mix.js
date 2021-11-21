@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const path = require('path');
 
 /*
  |--------------------------------------------------------------------------
@@ -16,4 +17,19 @@ const mix = require('laravel-mix');
 //         //
 //     ]);
 
+mix.webpackConfig(webpack => {
+    return {
+        plugins: [
+            new webpack.DefinePlugin({
+                __VUE_OPTIONS_API__: false,
+                __VUE_PROD_DEVTOOLS__: false,
+            }),
+        ],
+    }
+})
+
+mix.alias({
+    '@': path.join(__dirname, 'resources/admin'),
+    vue$: path.join(__dirname, 'node_modules/vue/dist/vue.esm-bundler.js')
+});
 mix.js('resources/admin/main.js', 'public/js').vue();

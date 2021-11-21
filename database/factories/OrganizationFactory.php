@@ -11,10 +11,14 @@ class OrganizationFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            //
+            'name'        => $this->faker->name,
+            'address'     => $this->faker->address,
+            'phone'       => $this->faker->e164PhoneNumber,
+            'email'       => $this->faker->safeEmail,
+            'description' => $this->faker->words(5, false),
         ];
     }
 }

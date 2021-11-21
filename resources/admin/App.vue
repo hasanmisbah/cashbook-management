@@ -1,9 +1,14 @@
 <template>
-<h1>Hello World</h1>
+    <router-view/>
 </template>
 
 <script>
-export default {
-    name: "App"
-}
+import './assets/css/bootstrap.min.css'
+import './assets/css/lineicons.css'
+import './assets/css/materialdesignicons.min.css'
+import './assets/css/main.css'
+import { defineComponent } from 'vue'
+export default defineComponent({
+    name: 'App'
+})
 </script>
