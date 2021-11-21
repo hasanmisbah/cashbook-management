@@ -14,7 +14,8 @@ class PurchaseFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'amount'      => 100,
+            'description' => $this->faker->words(6, true),
         ];
     }
 }

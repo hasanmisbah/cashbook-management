@@ -21,6 +21,7 @@ class CreateTransactionsTable extends Migration
 
             $table->unsignedBigInteger('ref_id');
             $table->integer('reference');
+
             $table->integer('type')->default(0);
             $table->integer('amount')->default(0);
             $table->integer('status')->default(0);
