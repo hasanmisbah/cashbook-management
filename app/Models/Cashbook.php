@@ -12,6 +12,9 @@ class Cashbook extends Model
 
     protected $guarded = ['id'];
 
+    public const TYPE_IN = 0;
+    public const TYPE_OUT = 1;
+
     public function organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class);
