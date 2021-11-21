@@ -15,10 +15,12 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('loan_id')->nullable()->constrained('loans');
-            $table->foreignId('purchase_id')->nullable()->constrained('purchases');
-            $table->foreignId('order_id')->nullable()->constrained('orders');
-            $table->foreignId('purchases')->nullable()->constrained('loans');
+
+            $table->foreignId('organization_id')
+                ->constrained('organizations');
+
+            $table->unsignedBigInteger('ref_id');
+            $table->integer('reference');
             $table->integer('type')->default(0);
             $table->integer('amount')->default(0);
             $table->integer('status')->default(0);

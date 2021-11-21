@@ -15,6 +15,10 @@ class CreateCashbooksTable extends Migration
     {
         Schema::create('cashbooks', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('organization_id')
+                ->constrained('organizations');
+
             $table->foreignId('payment_id')->constrained('payments');
             $table->integer('type');
             $table->integer('amount');

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
@@ -15,4 +16,9 @@ class Order extends Model
     public const STATUS_CANCELLED = 3;
 
     protected $guarded = ['id'];
+
+    public function organization(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class);
+    }
 }

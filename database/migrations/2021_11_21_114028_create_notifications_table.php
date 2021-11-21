@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExpenseSourcesTable extends Migration
+class CreateNotificationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateExpenseSourcesTable extends Migration
      */
     public function up()
     {
-        Schema::create('expense_sources', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('organization_id')
-                ->constrained('organizations');
-            $table->string('name');
+        Schema::create('notifications', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('type');
+            $table->morphs('notifiable');
+            $table->text('data');
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateExpenseSourcesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expense_sources');
+        Schema::dropIfExists('notifications');
     }
 }

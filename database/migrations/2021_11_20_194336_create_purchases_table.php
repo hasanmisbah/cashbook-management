@@ -15,6 +15,8 @@ class CreatePurchasesTable extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('organization_id')
+                ->constrained('organizations');
             $table->foreignId('user_id')
                 ->nullable()
                 ->constrained('customers');

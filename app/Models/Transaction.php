@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Transaction extends Model
 {
@@ -17,5 +18,14 @@ class Transaction extends Model
     public const TYPE_IN = 0;
     public const TYPE_OUT = 1;
 
+    public const REF_PURCHASES = 0;
+    public const REF_ORDERS = 1;
+    public const REF_LOANS = 2;
+
     protected $guarded = ['id'];
+
+    public function organization(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class);
+    }
 }
