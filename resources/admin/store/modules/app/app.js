@@ -4,24 +4,27 @@ import commonActions from '../common/actions';
 import commonGetters from '../common/getters';
 
 export default {
-    namespaced: true,
+  namespaced: true,
 
-    state: ()=> ({
-        ...commonState,
-        showSidebar: true
-    }),
+  state: () => ({
+    ...commonState,
+    showSidebar: true,
+    isBootstrapped: false
+  }),
 
-    getters: {
-        ...commonGetters,
-    },
+  getters: {
+    ...commonGetters,
+  },
 
-    mutations: {
-        ...commonMutations,
-        updateSidebar: (state, payload) => state.showSidebar = payload,
-    },
+  mutations: {
+    ...commonMutations,
+    updateSidebar: (state, payload) => state.showSidebar = payload,
+    updateIsBootstrapped: (state, payload) => state.isBootstrapped = payload
+  },
 
-    actions: {
-        ...commonActions,
-        toggleSidebar: ({ commit, state }, payload) => commit('updateSidebar', !state.showSidebar)
-    }
+  actions: {
+    ...commonActions,
+    toggleSidebar: ({ commit, state }, payload) => commit('updateSidebar', !state.showSidebar),
+    setBootstrapped: ({ commit, state }, payload) => commit('updateIsBootstrapped', payload)
+  }
 }

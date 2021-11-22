@@ -3,7 +3,14 @@
 </template>
 
 <script>
-export default {
-    name: 'Dashboard'
-}
+import {defineComponent, onMounted} from 'vue'
+import Auth from "../Services/Auth";
+export default defineComponent({
+    name: 'Dashboard',
+   setup(){
+      onMounted(()=>{
+       // Auth.user();
+      })
+   }
+})
 </script>

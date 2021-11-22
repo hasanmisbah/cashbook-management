@@ -1,6 +1,6 @@
 {
     "/js/main.js": "/js/main.js",
-    "/js/Dashboard.js": "/js/Dashboard.js",
     "/js/Login.js": "/js/Login.js",
-    "/js/register.js": "/js/register.js"
+    "/js/register.js": "/js/register.js",
+    "/js/Dashboard.js": "/js/Dashboard.js"
 }

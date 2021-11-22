@@ -1,40 +1,62 @@
+import http from '../Plugin/http';
+import { GET_COOKIE } from '../utils/urls';
+
 export default class Api {
-    static failedResponse = (error) => {
 
-        const response = {
-            message: 'Something went wrong, Please Try Again Later',
-            status: false,
-            statusCode: 500,
-            errors: [],
-        };
+  static cookieFetched = false
 
-        if (!error.response) {
-            return response;
-        }
+  static http = http
 
-        response.message = error.response.statusText || error.response.data?.message || error.message;
+  static getCookie = async () => {
 
-        // Specifically Catch error message because of avoiding Generic Error Message
-        if (error.response.data?.message) {
-            response.message = error.response.data?.message;
-        }
+    if (this.cookieFetched) {
+      return;
+    }
 
-        response.errors = error.response.data?.errors || [];
-        response.statusCode = error.response.status || 500;
+    await http.get(GET_COOKIE);
+    this.cookieFetched = true;
+  }
 
-        return Promise.reject(response);
+  static failedResponse = (error) => {
+
+    const response = {
+      message: 'Something went wrong, Please Try Again Later',
+      status: false,
+      statusCode: 500,
+      errors: [],
     };
 
-    static getResponse = async (callback) => {
+    if (!error.response) {
+      return response;
+    }
 
-        try {
+    response.message = error.response.statusText || error.response.data?.message || error.message;
 
-            return await callback();
+    // Specifically Catch error message because of avoiding Generic Error Message
+    if (error.response.data?.message) {
+      response.message = error.response.data?.message;
+    }
 
-        } catch (e) {
+    response.errors = error.response.data?.errors || [];
+    response.statusCode = error.response.status || 500;
 
-            return this.failedResponse(e);
+    return Promise.reject(response);
+  };
 
-        }
-    };
+  static getResponse = async (callback) => {
+
+    try {
+
+      if (!this.cookieFetched) {
+        await this.getCookie();
+      }
+
+      return await callback();
+
+    } catch (e) {
+
+      return this.failedResponse(e);
+
+    }
+  };
 }

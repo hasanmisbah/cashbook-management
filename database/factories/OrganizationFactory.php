@@ -18,7 +18,7 @@ class OrganizationFactory extends Factory
             'address'     => $this->faker->address,
             'phone'       => $this->faker->e164PhoneNumber,
             'email'       => $this->faker->safeEmail,
-            'description' => $this->faker->words(5, false),
+            'description' => $this->faker->words(5, true),
         ];
     }
 }

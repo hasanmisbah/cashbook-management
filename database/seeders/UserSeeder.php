@@ -26,9 +26,9 @@ class UserSeeder extends Seeder
         Organization::factory()
             ->count(1)
             ->state(['user_id' => $user->id ])
-            ->afterCreating(function($organization){
-                // :Todo add Some Seeder
-            })
+//            ->afterCreating(function($organization){
+//                // :Todo add Some Seeder
+//            })
             ->create();
 
         User::factory()->count(3)->create();
