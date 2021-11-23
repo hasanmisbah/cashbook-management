@@ -596,6 +596,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     route: _ctx.routeMap.home
   }, null, 8
   /* PROPS */
+  , ["route"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_nav_item, {
+    route: _ctx.routeMap.expenseSource
+  }, null, 8
+  /* PROPS */
   , ["route"])])])], 2
   /* CLASS */
   );

@@ -11,6 +11,7 @@
     <nav class="sidebar-nav">
       <ul>
         <nav-item :route=" routeMap.home "/>
+        <nav-item :route=" routeMap.expenseSource "/>
       </ul>
     </nav>
   </aside>

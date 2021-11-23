@@ -16,6 +16,16 @@ export default [
         meta: {
           permission: routeMap.home.permission
         }
+      },
+
+      {
+        path: routeMap.expenseSource.path,
+        name: routeMap.expenseSource.name,
+        component: ()=> import /* webpackChunkName: 'Login' */ ('../views/ExpenseSource/ExpenseSource'),
+        beforeEnter: authenticated,
+        meta: {
+          permission: routeMap.expenseSource.permission
+        }
       }
     ],
 

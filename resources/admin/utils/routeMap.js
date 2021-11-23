@@ -30,6 +30,15 @@ const routeMap = {
         permission: {
 
         },
+    },
+  expenseSource: {
+        name: 'ExpenseSource',
+        title: 'Expense Source',
+        path: '/expense-source',
+        icon: 'mdi mdi-database',
+        permission: {
+
+        },
     }
 }
 
