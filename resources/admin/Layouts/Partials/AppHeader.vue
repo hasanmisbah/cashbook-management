@@ -143,7 +143,7 @@
             <!-- message end -->
             <!-- filter start -->
             <div class="filter-box ml-15 d-none d-md-flex">
-              <button id="filter" class="" type="button">
+              <button @click="logout" id="filter" class="" type="button">
                 <i class="lni lni-funnel"></i>
               </button>
             </div>
@@ -215,9 +215,12 @@ export default defineComponent({
     const toggleSidebar = () => store.dispatch('app/toggleSidebar');
     const state = reactive({
       isActiveSidebar: computed(() => store.state.app.showSidebar)
-    })
+    });
+
+      const logout = ()=>  store.dispatch('user/tryLogout');
     return {
       toggleSidebar,
+      logout,
       ...toRefs(state)
     }
   }

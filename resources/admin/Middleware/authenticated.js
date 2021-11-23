@@ -1,24 +1,13 @@
 import middleware from './middleware';
 import routeMap from '../utils/routeMap';
-
+const { validateUserIsAuthenticated } = middleware()
 export default async (to, from, next) => {
 
-  const validated = await validateRequest();
+  const userIsAuthenticated = await validateUserIsAuthenticated();
 
-  if (validated) {
+  if (userIsAuthenticated) {
     return next();
   }
 
   return next({ name: routeMap.auth.login.name })
-}
-
-function validateRequest() {
-
-  const { isAuthenticated, isBootstrapped } = middleware()
-
-  if (isBootstrapped.value) {
-    return isAuthenticated.value
-  }
-
-  return false
 }

@@ -25,6 +25,17 @@ export default {
   actions: {
     ...commonActions,
     toggleSidebar: ({ commit, state }, payload) => commit('updateSidebar', !state.showSidebar),
-    setBootstrapped: ({ commit, state }, payload) => commit('updateIsBootstrapped', payload)
+    setBootstrapped: ({ commit, state }, payload) => commit('updateIsBootstrapped', payload),
+
+    async bootStrapApp({ dispatch, state }){
+
+      if(state.isBootstrapped){
+        return
+      }
+
+      await dispatch('user/fetchAuthenticatedUser', {} ,{root: true});
+
+      dispatch('setBootstrapped', true);
+    },
   }
 }
