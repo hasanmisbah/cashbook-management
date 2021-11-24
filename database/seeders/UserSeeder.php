@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ExpenseSource;
 use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -26,9 +27,15 @@ class UserSeeder extends Seeder
         Organization::factory()
             ->count(1)
             ->state(['user_id' => $user->id ])
-//            ->afterCreating(function($organization){
-//                // :Todo add Some Seeder
-//            })
+            ->afterCreating(function($organization){
+                ExpenseSource::factory()
+                    ->count(50)
+                    ->state([
+                        'organization_id' => $organization->id
+                    ])
+                    ->create()
+                ;
+            })
             ->create();
 
         User::factory()->count(3)->create();
