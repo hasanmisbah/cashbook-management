@@ -25,11 +25,43 @@ mix.webpackConfig(webpack => {
                 __VUE_PROD_DEVTOOLS__: false,
             }),
         ],
+      // module: {
+      //   rules: [
+      //     {
+      //       test: /\.css$/,
+      //       loaders: [
+      //         "style-loader",
+      //         {
+      //           loader: "css-loader",
+      //           options: { modules: true, importLoaders: 1 }
+      //         }
+      //       ]
+      //     }
+      //   ]
+      // }
     }
-})
+});
+
+// mix.webpackConfig({
+//   module: {
+//     rules: [
+//       {
+//         test: /\.css$/,
+//         loaders: [
+//           "style-loader",
+//           {
+//             loader: "css-loader",
+//             options: { modules: true, importLoaders: 1 }
+//           }
+//         ]
+//       }
+//     ]
+//   }
+// });
 
 mix.alias({
     '@': path.join(__dirname, 'resources/admin'),
     vue$: path.join(__dirname, 'node_modules/vue/dist/vue.esm-bundler.js')
 });
-mix.js('resources/admin/main.js', 'public/js').vue();
+
+mix.js('resources/admin/main.js', 'public/js').vue({version : 3}).sourceMaps();

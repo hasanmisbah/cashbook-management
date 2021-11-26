@@ -3,6 +3,7 @@ import getters from '../common/getters';
 import mutations from '../common/mutations';
 import actions from '../common/actions';
 import ExpenseSource from '../../../Services/ExpenseSource';
+import { isEmpty } from 'lodash';
 
 export default {
   namespaced: true,
@@ -12,7 +13,8 @@ export default {
   }),
 
   getters: {
-    ...getters
+    ...getters,
+    data: (state)=> isEmpty(state.data) ? [] : state.data
   },
 
   mutations: {

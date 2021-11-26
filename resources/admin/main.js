@@ -7,13 +7,8 @@ import router from './router';
 import App from './App';
 import store from './store'
 
-import PrimeVue from 'primevue/config';
-
-
-
 const app = createApp(App);
-app.use(router);
 app.use(ElementPlus);
-app.use(PrimeVue);
 app.use(store);
+app.use(router);
 app.mount("#app");

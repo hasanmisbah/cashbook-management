@@ -291,13 +291,13 @@ export default defineComponent({
 }
 
 ::v-deep(.p-datatable) {
-  .p-datatable-tbody {
-    tr {
-      td {
-        padding: v-bind('bodyColumnPadding')
-      }
-    }
-  }
+  //.p-datatable-tbody {
+  //  tr {
+  //    td {
+  //      padding: v-bind('bodyColumnPadding')
+  //    }
+  //  }
+  //}
 
   .p-datatable-thead {
     tr {
