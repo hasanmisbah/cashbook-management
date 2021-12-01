@@ -51,7 +51,7 @@
         <el-pagination
           background
           layout="sizes, prev, pager, next"
-          :page-count="paginationCount"
+          :page-count="pageCount"
           v-model:current-page="paginationIndex"
           @size-change="perPage = $event"
         />
@@ -64,7 +64,9 @@
 import { computed, defineComponent, reactive, toRefs } from 'vue'
 import { Edit, Delete, View } from '@element-plus/icons'
 export default defineComponent({
+
   name: "DataTable",
+
   props: {
 
     columns: {
@@ -106,9 +108,11 @@ export default defineComponent({
     }
 
   },
+
   components: {
     Edit, Delete, View
   },
+
   setup(props, {emit}){
 
     const data = reactive({
@@ -117,7 +121,7 @@ export default defineComponent({
       search: '',
       perPage: 10,
       paginationIndex: 1,
-      paginationCount: computed(()=> Math.ceil((data.filteredData.length / data.perPage))),
+      pageCount: computed(()=> Math.ceil((data.filteredData.length / data.perPage))),
 
       filteredData: computed(()=> {
 
@@ -129,6 +133,7 @@ export default defineComponent({
               .toLowerCase()
               .includes(data.search.toString().toLowerCase()))
             : data.tableData
+          ;
         });
       }),
 

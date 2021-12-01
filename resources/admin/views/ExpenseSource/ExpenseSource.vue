@@ -11,15 +11,17 @@
 
 <script>
 
-import { computed, defineComponent, onMounted, reactive, toRefs, watch } from 'vue'
+import { computed, defineComponent, onMounted, reactive, toRefs } from 'vue'
 
 import { useStore } from "vuex";
 
 import DataTable from "../../Components/Utils/DataTable";
 
 export default defineComponent({
+
   name: "ExpenseSource",
   components: { DataTable },
+
   setup() {
 
     const store = useStore()
@@ -37,7 +39,6 @@ export default defineComponent({
 
       expenseSource: computed(()=> store.getters["expenseSource/data"]),
 
-      search: '',
     });
 
     onMounted(async () => {
