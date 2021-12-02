@@ -1,12 +1,14 @@
 <template>
-<div class="card">
-  <div class="card-body" v-loading="loading">
-    <data-table
-      :columns="columnMap"
-      :data="expenseSource"
-    />
+  <div class="card">
+    <div v-loading="loading" class="card-body">
+      <data-table
+        :columns="columnMap"
+        :data="expenseSource"
+      />
+    </div>
+    <el-button @click="showModal = !showModal">show modal</el-button>
+    <modal v-model="showModal"/>
   </div>
-</div>
 </template>
 
 <script>
@@ -16,11 +18,12 @@ import { computed, defineComponent, onMounted, reactive, toRefs } from 'vue'
 import { useStore } from "vuex";
 
 import DataTable from "../../Components/Utils/DataTable";
+import Modal from "../../Components/Utils/Modal";
 
 export default defineComponent({
 
   name: "ExpenseSource",
-  components: { DataTable },
+  components: { Modal, DataTable },
 
   setup() {
 
@@ -29,15 +32,14 @@ export default defineComponent({
     const data = reactive({
 
       loading: false,
+      showModal: false,
 
       columnMap: [
-
         { field: 'name', label: 'Name', sortable: true },
         { field: 'created_at', label: 'Created_at', sortable: true },
-
       ],
 
-      expenseSource: computed(()=> store.getters["expenseSource/data"]),
+      expenseSource: computed(() => store.getters["expenseSource/data"]),
 
     });
 

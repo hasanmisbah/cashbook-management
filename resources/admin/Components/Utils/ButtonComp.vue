@@ -1,6 +1,7 @@
 <template>
   <button
-    :class="`main-btn ${buttonType}-btn btn btn-${buttonType} btn-hover text-center`"
+    class="btn btn-hover text-center"
+    :class=" `${mainBtn ? 'main-btn' : ''} ${outlined ? 'btn-outline-'+buttonType : 'btn-'+buttonType}`"
     :disabled="loading"
     :type="type"
   >
@@ -23,6 +24,11 @@ export default defineComponent({
       default: 'primary'
     },
 
+    mainBtn:{
+      type: Boolean,
+      default: true
+    },
+
     type: {
       type : String,
       default: 'button'
@@ -31,11 +37,11 @@ export default defineComponent({
     loading: {
       type: Boolean,
       default: false
+    },
+    outlined: {
+      type: Boolean,
+      default: false
     }
   }
 })
 </script>
-
-<style scoped>
-
-</style>
