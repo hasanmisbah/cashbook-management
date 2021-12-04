@@ -210,10 +210,10 @@ export default defineComponent({
     const fireEvent = (event, data) => emit(event, data);
 
 
-    const handleAction = (event, item) => {
+    const handleAction = async (event, item) => {
 
       if (props.actionHandler instanceof Function) {
-        props.actionHandler(event, item)
+        await props.actionHandler(event, item)
         return;
       }
 
