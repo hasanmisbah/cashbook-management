@@ -20,7 +20,7 @@ class ExpenseSourceController extends Controller
     public function index(): JsonResponse
     {
         $expenseSource = ExpenseSource::all();
-        return Helper::formatResponse($expenseSource);
+        return Helper::sendResponse($expenseSource);
     }
 
     /**
@@ -36,7 +36,7 @@ class ExpenseSourceController extends Controller
             'organization_id' => $request->user()->organization()->first()->id
         ]);
 
-        return Helper::formatResponse($expenseSource, 'Expense source successfully Added');
+        return Helper::sendResponse($expenseSource, 'Expense source successfully Added');
     }
 
 
@@ -53,7 +53,7 @@ class ExpenseSourceController extends Controller
             'name' => $request->name,
         ]);
 
-        return Helper::formatResponse($expenseSource, 'Expense source successfully updated');
+        return Helper::sendResponse($expenseSource, 'Expense source successfully updated');
     }
 
     /**
@@ -65,6 +65,6 @@ class ExpenseSourceController extends Controller
     public function destroy(ExpenseSource $expenseSource): JsonResponse
     {
         $expenseSource->delete();
-        return Helper::formatResponse($expenseSource, 'Expense source successfully Deleted');
+        return Helper::sendResponse($expenseSource, 'Expense source successfully Deleted');
     }
 }
