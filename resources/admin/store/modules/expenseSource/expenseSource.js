@@ -25,14 +25,45 @@ export default {
     ...actions,
 
     async getExpenseSource({ dispatch }) {
+
       try {
+
         const response = await ExpenseSource.get()
         dispatch('setData', response.data.data)
+
       } catch (e) {
+
         dispatch('setData', {})
         dispatch('setErrors', e.errors)
         dispatch('setErrorMsg', e.message)
+
+      }
+
+    },
+
+    async deleteExpenseSource({ dispatch, state }, id){
+
+      dispatch('setLoading', true)
+
+      const currentState = [ ...state.data ];
+
+      try{
+
+        const response = await ExpenseSource.delete(id);
+
+        const updatedState = currentState.filter((item) => item.id !== id)
+
+        dispatch('setData', updatedState);
+        dispatch('setLoading', false)
+
+        return response;
+      }catch (e) {
+
+        dispatch('setLoading', false)
+
+        return e;
       }
     }
+
   }
 }
