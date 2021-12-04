@@ -13,7 +13,13 @@
         :label="column.label"
         :prop="column.field"
         :sortable="column.sortable || false"
-      />
+      >
+
+        <template #default="{ row }">
+          {{ handlePropFormatting(column, row) }}
+        </template>
+
+      </el-table-column>
 
       <el-table-column v-if="showSearch || showAction" align="right">
 
@@ -220,9 +226,24 @@ export default defineComponent({
       fireEvent(event, item);
     }
 
+
+    const handlePropFormatting = (column, row)=>{
+
+      if(!column.formatter){
+        return row[column.field]
+      }
+
+      if((!column.formatter instanceof Function)){
+        return row[column.field]
+      }
+
+      return column.formatter(row[column.field])
+    }
+
     return {
       ...toRefs(data),
       handleAction,
+      handlePropFormatting,
       LIST_ITEM_ACTION_VIEW,
       LIST_ITEM_ACTION_UPDATE,
       LIST_ITEM_ACTION_UPDATE_STATUS,

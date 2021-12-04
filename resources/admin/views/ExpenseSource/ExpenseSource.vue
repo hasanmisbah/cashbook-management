@@ -28,6 +28,7 @@ import Modal from "../../Components/Utils/Modal";
 import ButtonComp from "../../Components/Utils/ButtonComp";
 import { LIST_ITEM_ACTION_DELETE, LIST_ITEM_ACTION_UPDATE, LIST_ITEM_ACTION_VIEW } from "../../utils/constants";
 import Notify from "../../utils/Notify";
+import { formatDate } from "../../utils/helper";
 
 export default defineComponent({
 
@@ -45,7 +46,7 @@ export default defineComponent({
 
       columnMap: [
         { field: 'name', label: 'Name', sortable: true },
-        { field: 'created_at', label: 'Created_at', sortable: true },
+        { field: 'created_at', label: 'Created_at', sortable: true, formatter: (value) => formatDate(value)},
       ],
 
       expenseSource: computed(() => store.getters["expenseSource/data"]),

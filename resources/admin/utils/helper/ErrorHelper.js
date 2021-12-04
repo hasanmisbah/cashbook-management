@@ -12,7 +12,7 @@ export default class ErrorHelper {
      * @param error : String|Symbol
      * @return String|False
      */
-    const extractError = (error) => error?.[0] || false;
+    const extractError = (error) => error?.[0] || '';
 
     // execute the map
     mapperCb(errors, extractError);
