@@ -12,6 +12,12 @@ class Helper {
         ], $statusCode);
     }
 
+
+    static function sendResponse(mixed $data = [], string $message = 'Data successfully fetched', bool $status = true, int $statusCode = 200): JsonResponse
+    {
+        return self::formatResponse($data, $message, $status, $statusCode);
+    }
+
     static function unAuthorizedResponse($message = 'Unauthorized access'): JsonResponse
     {
         return self::formatResponse([], $message, false, 403);
