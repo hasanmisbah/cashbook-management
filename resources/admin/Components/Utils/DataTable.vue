@@ -2,40 +2,79 @@
   <div>
     <el-table
       :data="renderedData"
-      style="width: 100%"
       stripe
+      style="width: 100%"
     >
-      <el-table-column type="index" />
+      <el-table-column type="index"/>
+
       <el-table-column
         v-for="( column, index ) in columns"
+        :key="`data-table-${ index }`"
         :label="column.label"
         :prop="column.field"
-        :key="`data-table-${ index }`"
         :sortable="column.sortable || false"
       />
 
-      <el-table-column align="right" v-if="showSearch || showAction">
+      <el-table-column v-if="showSearch || showAction" align="right">
 
-        <template #header v-if="showSearch">
-          <el-input v-model="search" size="mini" placeholder="Type to search" />
+        <template v-if="showSearch" #header>
+          <el-input v-model="search" placeholder="Type to search" size="mini"/>
         </template>
 
-        <template #default="scope" v-if="showAction">
+        <template v-if="showAction" #default="scope">
 
-          <slot name="action" :data="scope">
-            <el-button v-if="showView" size="mini" @click="handleAction('view', scope.row)" plain>
+          <slot :data="scope" name="action">
+
+            <el-button
+              v-if="showView"
+              plain
+              size="mini"
+              @click="handleAction(LIST_ITEM_ACTION_VIEW, scope.row)"
+            >
               <el-icon :size="18">
                 <View/>
               </el-icon>
             </el-button>
 
-            <el-button v-if="showEdit" size="mini" @click="handleAction('edit', scope.row)" plain>
+            <el-button
+              v-if="showPrint"
+              plain size="mini"
+              @click="handleAction(LIST_ITEM_ACTION_PRINT, scope.row)"
+            >
+              <el-icon :size="18">
+                <Printer/>
+              </el-icon>
+            </el-button>
+
+            <el-button
+              v-if="showStatusUpdate"
+              plain
+              size="mini"
+              @click="handleAction(LIST_ITEM_ACTION_UPDATE_STATUS, scope.row)"
+            >
+              <el-icon :size="18">
+                <Connection/>
+              </el-icon>
+            </el-button>
+
+            <el-button
+              v-if="showEdit"
+              plain
+              size="mini"
+              @click="handleAction(LIST_ITEM_ACTION_UPDATE, scope.row)"
+            >
               <el-icon :size="18">
                 <edit/>
               </el-icon>
             </el-button>
 
-            <el-button v-if="showDelete" size="mini" type="danger" @click="handleAction('delete', scope.row)" plain>
+            <el-button
+              v-if="showDelete"
+              plain
+              size="mini"
+              type="danger"
+              @click="handleAction(LIST_ITEM_ACTION_DELETE, scope.row)"
+            >
               <el-icon :size="18">
                 <delete/>
               </el-icon>
@@ -45,14 +84,14 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-row align="center" justify="space-between" class="mt-2">
+    <el-row align="center" class="mt-2" justify="space-between">
       <el-col></el-col>
       <el-col>
         <el-pagination
+          v-model:current-page="paginationIndex"
+          :page-count="pageCount"
           background
           layout="sizes, prev, pager, next"
-          :page-count="pageCount"
-          v-model:current-page="paginationIndex"
           @size-change="perPage = $event"
         />
       </el-col>
@@ -62,7 +101,13 @@
 
 <script>
 import { computed, defineComponent, reactive, toRefs } from 'vue'
-import { Edit, Delete, View } from '@element-plus/icons'
+import { Edit, Delete, View, Printer, Connection } from '@element-plus/icons'
+import {
+  LIST_ITEM_ACTION_DELETE, LIST_ITEM_ACTION_PRINT,
+  LIST_ITEM_ACTION_UPDATE, LIST_ITEM_ACTION_UPDATE_STATUS,
+  LIST_ITEM_ACTION_VIEW
+} from "../../utils/constants";
+
 export default defineComponent({
 
   name: "DataTable",
@@ -89,7 +134,17 @@ export default defineComponent({
 
     showView: {
       type: Boolean,
-      default: true,
+      default: false,
+    },
+
+    showStatusUpdate: {
+      type: Boolean,
+      default: false
+    },
+
+    showPrint: {
+      type: Boolean,
+      default: false
     },
 
     showEdit: {
@@ -110,20 +165,20 @@ export default defineComponent({
   },
 
   components: {
-    Edit, Delete, View
+    Edit, Delete, View, Printer, Connection
   },
 
-  setup(props, {emit}){
+  setup(props, { emit }) {
 
     const data = reactive({
 
-      tableData: computed(()=> props.data) || [],
+      tableData: computed(() => props.data) || [],
       search: '',
       perPage: 10,
       paginationIndex: 1,
-      pageCount: computed(()=> Math.ceil((data.filteredData.length / data.perPage))),
+      pageCount: computed(() => Math.ceil((data.filteredData.length / data.perPage))),
 
-      filteredData: computed(()=> {
+      filteredData: computed(() => {
 
         return data.tableData.filter((obj) => {
 
@@ -133,11 +188,11 @@ export default defineComponent({
               .toLowerCase()
               .includes(data.search.toString().toLowerCase()))
             : data.tableData
-          ;
+            ;
         });
       }),
 
-      renderedData: computed(()=> {
+      renderedData: computed(() => {
 
         const filteredData = [...data.filteredData]
 
@@ -155,19 +210,24 @@ export default defineComponent({
     const fireEvent = (event, data) => emit(event, data);
 
 
-   const handleAction = (event, item) => {
+    const handleAction = (event, item) => {
 
-     if(props.actionHandler instanceof Function){
-       props.actionHandler(event, item)
-       return;
-     }
+      if (props.actionHandler instanceof Function) {
+        props.actionHandler(event, item)
+        return;
+      }
 
-     fireEvent(event, item);
-   }
+      fireEvent(event, item);
+    }
 
-    return{
+    return {
       ...toRefs(data),
-      handleAction
+      handleAction,
+      LIST_ITEM_ACTION_VIEW,
+      LIST_ITEM_ACTION_UPDATE,
+      LIST_ITEM_ACTION_UPDATE_STATUS,
+      LIST_ITEM_ACTION_DELETE,
+      LIST_ITEM_ACTION_PRINT,
     }
   }
 })
