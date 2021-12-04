@@ -26,6 +26,8 @@ import { useStore } from "vuex";
 import DataTable from "../../Components/Utils/DataTable";
 import Modal from "../../Components/Utils/Modal";
 import ButtonComp from "../../Components/Utils/ButtonComp";
+import { LIST_ITEM_ACTION_DELETE, LIST_ITEM_ACTION_UPDATE, LIST_ITEM_ACTION_VIEW } from "../../utils/constants";
+import Notify from "../../utils/Notify";
 
 export default defineComponent({
 
@@ -48,10 +50,34 @@ export default defineComponent({
 
       expenseSource: computed(() => store.getters["expenseSource/data"]),
 
+      selectedItem: {},
+
     });
 
+    const handleDeleteAction = async () => {
+      try{
+        const response = await store.dispatch('expenseSource/deleteExpenseSource', data.selectedItem.id);
+        Notify.success(response.data.message || 'Source successfully Deleted');
+      }catch (e) {
+        Notify.error(e.message || 'Something went wrong');
+      }
+    }
+
     const handleAction = (event, item)=> {
-      console.log({ event, item })
+
+      data.selectedItem = item;
+
+      if(event === LIST_ITEM_ACTION_DELETE){
+
+        Notify.confirm({
+          confirmCv: handleDeleteAction,
+          cancelCv: () => data.selectedItem = {}
+        });
+      }
+
+      if(event === LIST_ITEM_ACTION_UPDATE){
+
+      }
     }
 
     onMounted(async () => {
