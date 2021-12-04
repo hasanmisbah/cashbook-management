@@ -28,7 +28,7 @@ import Modal from "../../Components/Utils/Modal";
 import ButtonComp from "../../Components/Utils/ButtonComp";
 import { LIST_ITEM_ACTION_DELETE, LIST_ITEM_ACTION_UPDATE, LIST_ITEM_ACTION_VIEW } from "../../utils/constants";
 import Notify from "../../utils/Notify";
-import { formatDate } from "../../utils/helper";
+import { formatDate, formatDateTime } from "../../utils/helper";
 
 export default defineComponent({
 
@@ -41,12 +41,12 @@ export default defineComponent({
 
     const data = reactive({
 
-      loading: false,
+      loading: computed(()=> store.getters["expenseSource/loading"]),
       showModal: false,
 
       columnMap: [
         { field: 'name', label: 'Name', sortable: true },
-        { field: 'created_at', label: 'Created At', sortable: true, formatter: (value) => formatDate(value)},
+        { field: 'created_at', label: 'Created At', sortable: true, formatter: (value) => formatDateTime(value)},
       ],
 
       expenseSource: computed(() => store.getters["expenseSource/data"]),
@@ -82,9 +82,7 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      data.loading = true;
       await store.dispatch('expenseSource/getExpenseSource');
-      data.loading = false;
     })
     return {
       ...toRefs(data),
