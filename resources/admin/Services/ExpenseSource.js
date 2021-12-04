@@ -9,6 +9,6 @@ export default class ExpenseSource extends Api {
 
   static update = (id, data) => this.getResponse(() => this.http.patch(`${ UPDATE_EXPENSE_SOURCE }/${ id }`, data));
 
-  static delete = (id) => this.getResponse(() => this.http.post(`${ DELETE_EXPENSE_SOURCE }/${ id }`));
+  static delete = (id) => this.getResponse(() => this.http.delete(`${ DELETE_EXPENSE_SOURCE }/${ id }`));
 
 }
