@@ -46,7 +46,7 @@ export default defineComponent({
 
       columnMap: [
         { field: 'name', label: 'Name', sortable: true },
-        { field: 'created_at', label: 'Created_at', sortable: true, formatter: (value) => formatDate(value)},
+        { field: 'created_at', label: 'Created At', sortable: true, formatter: (value) => formatDate(value)},
       ],
 
       expenseSource: computed(() => store.getters["expenseSource/data"]),
