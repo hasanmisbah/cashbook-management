@@ -1,20 +1,20 @@
 import { ElNotification, ElMessageBox } from 'element-plus'
 
-export default class Notification {
+export default class Notify {
 
-  static info = (message, title) => {
+  static info = (message, title = "") => {
     this.fireNotification({ title, message, type:"info" })
   }
 
-  static success = (message, title) => {
+  static success = (message, title = '') => {
     this.fireNotification({ title, message, type:"success" })
   }
 
-  static warning = (message, title) => {
+  static warning = (message, title = "") => {
     this.fireNotification({ title, message, type:"warning" })
   }
 
-  static error = (message, title) => {
+  static error = (message, title = "") => {
     this.fireNotification({ title, message, type:"error" })
   }
 
@@ -28,8 +28,14 @@ export default class Notification {
 
   }
 
-  static confirm = ({ message, title, confirmCv, cancelCv, config = null } ) => {
-    this.showConfirm(message, title, confirmCv, cancelCv)
+  static confirm = ({
+                      message = 'Are you sure you want to delete',
+                      title = 'Are you sure?',
+                      confirmCv = null,
+                      cancelCv = null,
+                      config = null
+                    }) => {
+    this.showConfirm({ message, title, confirmCv, cancelCv })
   }
 
   static defaultConfirmationConfig = {
@@ -38,7 +44,7 @@ export default class Notification {
     type: 'warning',
   }
 
-  static showConfirm = (message, title, confirmCv, cancelCv, config = null) => {
+  static showConfirm = ({ message, title, confirmCv, cancelCv, config = null }) => {
 
     ElMessageBox
       .confirm(message, title, { ...this.defaultConfirmationConfig, ...config})
