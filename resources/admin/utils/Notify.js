@@ -2,19 +2,19 @@ import { ElNotification, ElMessageBox } from 'element-plus'
 
 export default class Notify {
 
-  static info = (message, title = "") => {
+  static info = (message, title = 'Info') => {
     this.fireNotification({ title, message, type:"info" })
   }
 
-  static success = (message, title = '') => {
+  static success = (message, title = 'Success') => {
     this.fireNotification({ title, message, type:"success" })
   }
 
-  static warning = (message, title = "") => {
+  static warning = (message, title = 'Warning') => {
     this.fireNotification({ title, message, type:"warning" })
   }
 
-  static error = (message, title = "") => {
+  static error = (message, title = 'Error') => {
     this.fireNotification({ title, message, type:"error" })
   }
 
