@@ -7,7 +7,7 @@
   >
     <template #title v-if="!!title">
 
-      <h1>{{ title }}</h1>
+      <h4>{{ title }}</h4>
 
       <el-divider style="margin-bottom: 0; margin-top: 10px" />
 
@@ -115,12 +115,15 @@ export default {
     const handleConfirm = async () => {
 
       if(props.confirmCv instanceof Function){
+
         data.confirming = true
+
         await props.confirmCv()
-        data.confirming = true
+
+        data.confirming = false
+
       }
 
-      fireEvent('update:modelValue', false);
     };
 
     const handleCancel = async () => {

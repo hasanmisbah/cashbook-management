@@ -9,6 +9,7 @@ use Helper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class ExpenseSourceController extends Controller
 {
@@ -19,7 +20,7 @@ class ExpenseSourceController extends Controller
      */
     public function index(): JsonResponse
     {
-        $expenseSource = ExpenseSource::all();
+        $expenseSource = ExpenseSource::orderByDesc('id')->get();
         return Helper::sendResponse($expenseSource);
     }
 
@@ -28,15 +29,20 @@ class ExpenseSourceController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws ValidationException
      */
     public function store(Request $request): JsonResponse
     {
+        $this->validate($request, [
+            'name' => 'required|string|min:3|max:50'
+        ]);
+
         $expenseSource = ExpenseSource::create([
             'name' => $request->name,
             'organization_id' => $request->user()->organization()->first()->id
         ]);
 
-        return Helper::sendResponse($expenseSource, 'Expense source successfully Added');
+        return Helper::sendResponse($expenseSource, 'Expense source successfully added');
     }
 
 
@@ -46,10 +52,15 @@ class ExpenseSourceController extends Controller
      * @param Request $request
      * @param ExpenseSource $expenseSource
      * @return JsonResponse
+     * @throws ValidationException
      */
     public function update(Request $request, ExpenseSource $expenseSource): JsonResponse
     {
-        $expenseSource = ExpenseSource::update([
+        $this->validate($request, [
+            'name' => 'required|string|min:3|max:50'
+        ]);
+
+        $expenseSource->update([
             'name' => $request->name,
         ]);
 

@@ -6,6 +6,7 @@ import ExpenseSource from '../../../Services/ExpenseSource';
 import { isEmpty } from 'lodash';
 
 export default {
+
   namespaced: true,
 
   state: () => ({
@@ -14,7 +15,7 @@ export default {
 
   getters: {
     ...getters,
-    data: (state)=> isEmpty(state.data) ? [] : state.data
+    data: (state) => isEmpty(state.data) ? [] : state.data
   },
 
   mutations: {
@@ -41,13 +42,48 @@ export default {
 
     },
 
-    async deleteExpenseSource({ dispatch, state }, id){
+    async createExpenseSource({ dispatch, state }, payload) {
+
+
+      try {
+
+        const response = await ExpenseSource.create(payload);
+        const updatedState = [response.data.data, ...state.data]
+
+        dispatch('setData', updatedState)
+        return response;
+
+      } catch (e) {
+
+        return e;
+      }
+    },
+
+    async updateExpenseSource({ dispatch, state }, {id, payload } ){
+
+      const currentState = [ ...state.data ]
+
+      try{
+
+        const response = await ExpenseSource.update(id, payload)
+        const updatedStore = currentState.map((source) => source.id === id ? response.data.data : source);
+        dispatch('setData', updatedStore);
+        return response;
+
+      }catch (e) {
+
+        return e;
+
+      }
+    },
+
+    async deleteExpenseSource({ dispatch, state }, id) {
 
       dispatch('setLoading', true)
 
-      const currentState = [ ...state.data ];
+      const currentState = [...state.data];
 
-      try{
+      try {
 
         const response = await ExpenseSource.delete(id);
 
@@ -57,7 +93,7 @@ export default {
         dispatch('setLoading', false)
 
         return response;
-      }catch (e) {
+      } catch (e) {
 
         dispatch('setLoading', false)
 

@@ -229,15 +229,12 @@ export default defineComponent({
 
     const handlePropFormatting = (column, row)=>{
 
-      if(!column.formatter){
-        return row[column.field]
+      if(column.formatter && column.formatter instanceof Function){
+        return column.formatter(row[column.field])
       }
 
-      if((!column.formatter instanceof Function)){
-        return row[column.field]
-      }
+      return row[column.field]
 
-      return column.formatter(row[column.field])
     }
 
     return {

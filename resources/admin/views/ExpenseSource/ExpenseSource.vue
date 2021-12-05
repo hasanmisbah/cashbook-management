@@ -13,7 +13,11 @@
         :action-handler="handleAction"
       />
     </div>
-    <modal v-model="showModal"/>
+    <expense-source-action
+      :current-source="selectedItem"
+      v-model="showModal"
+      :updated="handleActionClose"
+    />
   </div>
 </template>
 
@@ -24,16 +28,16 @@ import { computed, defineComponent, onMounted, reactive, toRefs } from 'vue'
 import { useStore } from "vuex";
 
 import DataTable from "../../Components/Utils/DataTable";
-import Modal from "../../Components/Utils/Modal";
 import ButtonComp from "../../Components/Utils/ButtonComp";
-import { LIST_ITEM_ACTION_DELETE, LIST_ITEM_ACTION_UPDATE, LIST_ITEM_ACTION_VIEW } from "../../utils/constants";
+import { LIST_ITEM_ACTION_DELETE, LIST_ITEM_ACTION_UPDATE } from "../../utils/constants";
 import Notify from "../../utils/Notify";
 import { formatDate, formatDateTime } from "../../utils/helper";
+import ExpenseSourceAction from "../../Components/ExpenseSource/ExpenseSourceAction";
 
 export default defineComponent({
 
   name: "ExpenseSource",
-  components: { ButtonComp, Modal, DataTable },
+  components: { ExpenseSourceAction, ButtonComp, DataTable },
 
   setup() {
 
@@ -77,16 +81,19 @@ export default defineComponent({
       }
 
       if(event === LIST_ITEM_ACTION_UPDATE){
-
+        data.showModal = true;
       }
     }
+
+    const handleActionClose = () => data.selectedItem = {}
 
     onMounted(async () => {
       await store.dispatch('expenseSource/getExpenseSource');
     })
     return {
       ...toRefs(data),
-      handleAction
+      handleAction,
+      handleActionClose
     }
   }
 })
