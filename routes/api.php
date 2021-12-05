@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\ExpenseSourceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,4 +27,5 @@ Route::prefix('v1/admin')
     ->middleware('auth:sanctum')
     ->group(function(){
         Route::apiResource('expense-source', ExpenseSourceController::class)->except('show');
+        Route::apiResource('expense', ExpenseController::class)->except('show');
     });
