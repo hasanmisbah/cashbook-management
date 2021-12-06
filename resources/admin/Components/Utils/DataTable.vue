@@ -190,9 +190,9 @@ export default defineComponent({
 
           return obj instanceof Object
             ? Object.values(obj).some((item) => item
-              .toString()
-              .toLowerCase()
-              .includes(data.search.toString().toLowerCase()))
+              ?.toString()
+              ?.toLowerCase()
+              ?.includes(data?.search?.toString()?.toLowerCase()))
             : data.tableData
             ;
         });
