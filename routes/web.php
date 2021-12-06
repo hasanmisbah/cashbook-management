@@ -17,4 +17,6 @@ use Illuminate\Support\Facades\Route;
 //    return view('welcome');
 //});
 
-Route::any('{any?}/{any1?}/{any2?}/{any3?}', fn() => view("welcome"))->name('home');
+Route::redirect('/', '/admin');
+
+Route::any('/admin/{any?}/{any1?}/{any2?}/{any3?}', fn() => view("welcome"))->name('home');
