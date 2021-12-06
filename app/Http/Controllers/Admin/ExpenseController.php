@@ -8,6 +8,7 @@ use App\Models\ExpenseSource;
 use Helper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ExpenseController extends Controller
 {
@@ -24,7 +25,7 @@ class ExpenseController extends Controller
 
         $data = [
             'expenses' => $expenses,
-            'sources' => $sources
+            'sources'  => $sources
         ];
 
         return Helper::sendResponse($data);
@@ -35,15 +36,32 @@ class ExpenseController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws ValidationException
      */
     public function store(Request $request): JsonResponse
     {
-        //'organization_id'
-        //'source_id'
-        //'amount'
-        //'description'
 
-        $expense = null;
+        $this->validate($request, [
+            'source'      => 'nullable|integer|exists:expense_sources,id',
+            'amount'      => 'required|integer',
+            'description' => 'nullable|string|min:5|max:150',
+        ]);
+
+
+        $expense = Expense::create([
+            'organization_id' => $request->user()->organization()->first()->id,
+            'amount'          => $request->amount,
+            'description'     => $request->description
+        ]);
+
+
+        if($request->source) {
+            $expense->source()->associate($request->source);
+            $expense->save();
+        }
+
+        $expense->load('source');
+
         return Helper::sendResponse($expense, 'Expense successfully created');
     }
 
@@ -54,13 +72,31 @@ class ExpenseController extends Controller
      * @param Request $request
      * @param Expense $expense
      * @return JsonResponse
+     * @throws ValidationException
      */
     public function update(Request $request, Expense $expense): JsonResponse
     {
-        //'organization_id'
-        //'source_id'
-        //'amount'
-        //'description'
+
+        $this->validate($request, [
+            'source'      => 'nullable|integer|exists:expense_sources,id',
+            'amount'      => 'required|integer',
+            'description' => 'nullable|string|min:5|max:150',
+        ]);
+
+        $expense->update([
+            'amount'      => $request->amount,
+            'description' => $request->description
+        ]);
+
+        if($request->source) {
+            $expense->source()->associate($request->source);
+        } else {
+            $expense->source()->dissociate();
+        }
+
+        $expense->save();
+
+        $expense->load('source');
 
         return Helper::sendResponse($expense, 'Expense successfully updated');
     }
@@ -74,7 +110,6 @@ class ExpenseController extends Controller
     public function destroy(Expense $expense): JsonResponse
     {
         $expense->delete();
-
         return Helper::sendResponse($expense, 'Expense successfully removed');
     }
 }
