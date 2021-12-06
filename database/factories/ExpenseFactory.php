@@ -15,7 +15,7 @@ class ExpenseFactory extends Factory
     {
         return [
             'amount'      => $this->faker->numberBetween(100, 999),
-            'description' => $this->faker->words(5, false),
+            'description' => $this->faker->words(5, true),
         ];
     }
 }
