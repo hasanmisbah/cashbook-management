@@ -13,7 +13,8 @@
         :action-handler="handleAction"
       />
     </div>
-    <expense-source-action
+    <expense-action
+      :expense-source="expenseSources"
       :current-source="selectedItem"
       v-model="showModal"
       :updated="handleActionClose"
@@ -33,11 +34,12 @@ import { LIST_ITEM_ACTION_DELETE, LIST_ITEM_ACTION_UPDATE } from "../../utils/co
 import Notify from "../../utils/Notify";
 import { formatDate, formatDateTime, formatMoney } from "../../utils/helper";
 import ExpenseSourceAction from "../../Components/ExpenseSource/ExpenseSourceAction";
+import ExpenseAction from "../../Components/Expense/ExpenseAction";
 
 export default defineComponent({
 
   name: "ExpenseSource",
-  components: { ExpenseSourceAction, ButtonComp, DataTable },
+  components: { ExpenseAction, ExpenseSourceAction, ButtonComp, DataTable },
 
   setup() {
 
@@ -45,7 +47,8 @@ export default defineComponent({
 
     const data = reactive({
 
-      loading: computed(()=> store.getters["expenseSource/loading"]),
+      loading: computed(()=> store.getters["expense/loading"]),
+
       showModal: false,
 
       columnMap: [
@@ -56,6 +59,7 @@ export default defineComponent({
       ],
 
       expenses: computed(() => store.getters["expense/data"]),
+      expenseSources: computed(()=> store.getters["expenseSource/data"]),
 
       selectedItem: {},
 
@@ -63,8 +67,8 @@ export default defineComponent({
 
     const handleDeleteAction = async () => {
       try{
-        const response = await store.dispatch('expenseSource/deleteExpenseSource', data.selectedItem.id);
-        Notify.success(response.data.message || 'Source successfully Deleted');
+        const response = await store.dispatch('expense/deleteExpense', data.selectedItem.id);
+        Notify.success(response.data.message || 'Expense successfully Deleted');
       }catch (e) {
         Notify.error(e.message || 'Something went wrong');
       }
@@ -102,7 +106,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style scoped>
-
-</style>

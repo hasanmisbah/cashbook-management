@@ -1,7 +1,7 @@
 <template>
   <modal
     v-model="showAction"
-    :title="`${ isUpdating ? 'Update' : 'Create' } expense source`"
+    :title="`${ isUpdating ? 'Update' : 'Create' } expense`"
     :confirm-cv="handleDataSave"
     :confirm-button-text="`${ isUpdating ? 'Update' : 'Create' }`"
   >
@@ -16,11 +16,46 @@
     >
 
       <el-form-item
-        label="Name"
-        prop="name"
-        :error="errors.name"
+        label="Amount"
+        prop="amount"
+        :error="errors.amount"
       >
-        <el-input v-model="form.name"/>
+        <el-input v-model.number="form.amount"/>
+      </el-form-item>
+
+      <el-form-item
+        label="Expense Source"
+        prop="expenseSource"
+        :error="errors.source"
+      >
+
+        <el-select
+          v-model="form.expenseSource"
+          placeholder="Select Expense Source"
+          style="width: 100%;"
+          filterable
+        >
+          <el-option
+            label="Unknown"
+            :value="null"
+          />
+
+          <el-option
+            v-for="(source, index) in expenseSources"
+            :label="source.name"
+            :value="source.id"
+            :key="`expense-source${index}`"
+          />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item
+        label="Description"
+        prop="description"
+        :error="errors.description"
+      >
+        <el-input v-model="form.description"/>
+
       </el-form-item>
 
     </el-form>
@@ -31,7 +66,7 @@
 import Modal from "../Utils/Modal";
 import { computed, defineComponent, reactive, toRefs, watch, ref } from 'vue'
 import { useStore } from 'vuex'
-import { max, min, required } from "../../utils/validationRules";
+import { integer, max, min, required } from "../../utils/validationRules";
 import ExpenseSource from "../../Services/ExpenseSource";
 import ErrorHelper from "../../utils/helper/ErrorHelper";
 import Notify from "../../utils/Notify";
@@ -39,7 +74,7 @@ import { isEmpty } from "lodash";
 
 export default defineComponent({
 
-  name: "ExpenseSourceAction",
+  name: "ExpenseAction",
 
   components: { Modal },
 
@@ -60,6 +95,11 @@ export default defineComponent({
     updated: {
       type: Function,
       required: false
+    },
+
+    expenseSource: {
+      type: [Array],
+      required: true,
     }
 
   },
@@ -74,23 +114,37 @@ export default defineComponent({
 
       actionTitle: 'Add new source',
 
+      expenseSources: computed(()=> props.expenseSource),
+
       form: {
-        name: '',
+        amount: '',
+        expenseSource: '',
+        description: '',
       },
 
       isUpdating: false,
 
       rules: {
 
-        name: [
-          required('name'),
-          min(3, 'name'),
-          max(35, 'name')
+        amount: [
+          required('amount'),
+          integer('amount'),
+        ],
+
+        description: [
+          min(3, 'description'),
+          max(150, 'description')
+        ],
+
+        expenseSource: [
+          // min(1, 'Expense Source'),
         ]
       },
 
       errors: {
-        name: ''
+        amount: '',
+        description: '',
+        source: '',
       }
     });
 
@@ -113,17 +167,19 @@ export default defineComponent({
     const handleDataSubmit = async () => {
 
       const formData = {
-        name: data.form.name
+        amount: data.form.amount,
+        source: data.form.expenseSource,
+        description: data.form.description
       }
 
       try{
 
         const response = data.isUpdating
-          ? await store.dispatch('expenseSource/updateExpenseSource', {id : data.form.id, payload: formData})
-          : await store.dispatch('expenseSource/createExpenseSource', formData)
+          ? await store.dispatch('expense/updateExpense', {id : data.form.id, payload: formData})
+          : await store.dispatch('expense/createExpense', formData)
         ;
 
-        Notify.success(response.data.message || 'Expense source successfully saved', 'Success');
+        Notify.success(response.data.message || 'Expense successfully saved', 'Success');
 
         resetForm();
 
@@ -132,7 +188,9 @@ export default defineComponent({
       }catch (e) {
 
         ErrorHelper.mapServerError(e, (error, ex) => {
-          data.errors.name = ex(error['name']);
+          data.errors.amount = ex(error['name']);
+          data.errors.description = ex(error['description']);
+          data.errors.source = ex(error['source']);
         })
 
         Notify.error(e.message || 'Something went wrong', 'Error');
@@ -143,10 +201,14 @@ export default defineComponent({
     const resetForm = () => {
 
       data.form = {
-        name: ''
+        amount: '',
+        description: '',
+        expenseSource: ''
       };
 
-      data.errors.name = ''
+      data.errors.amount = ''
+      data.errors.description = ''
+      data.errors.expenseSource = ''
 
       expenseForm?.value?.resetFields();
     }
@@ -180,7 +242,10 @@ export default defineComponent({
       }
 
       data.isUpdating = true
-      data.form = { ...nv }
+      data.form = {
+        ...nv,
+        expenseSource: nv?.source_id
+      }
 
     }
 

@@ -17,12 +17,13 @@ export default {
     ...getters,
     data: (state) => {
 
-      if(isEmpty(state.data)) return []
-
-      return state.data.map((item) => ({
+      return (isEmpty(state.data))
+        ? []
+        : state?.data?.map((item) => ({
         ...item,
-        source: item?.source?.name || 'unspecified'
+        source: item?.source?.name || 'unspecified',
       }))
+
     }
   },
 
@@ -41,9 +42,9 @@ export default {
 
         dispatch('setData', response?.data?.data?.expenses)
 
-        if(!rootGetters["expenseSource/hasData"]){
+        if (!rootGetters['expenseSource/hasData']) {
 
-          dispatch('expenseSource/setData', response.data.data.sources, {root: true})
+          dispatch('expenseSource/setData', response.data.data.sources, { root: true })
 
         }
 
@@ -76,18 +77,18 @@ export default {
       }
     },
 
-    async updateExpense({ dispatch, state }, {id, payload } ){
+    async updateExpense({ dispatch, state }, { id, payload }) {
 
-      const currentState = [ ...state.data ]
+      const currentState = [...state.data]
 
-      try{
+      try {
 
         const response = await Expense.update(id, payload)
         const updatedStore = currentState.map((source) => source.id === id ? response.data.data : source);
         dispatch('setData', updatedStore);
         return response;
 
-      }catch (e) {
+      } catch (e) {
 
         return e;
 
