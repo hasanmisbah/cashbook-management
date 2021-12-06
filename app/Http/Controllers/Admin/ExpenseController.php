@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Expense;
+use App\Models\ExpenseSource;
 use Helper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,8 +18,16 @@ class ExpenseController extends Controller
      */
     public function index(): JsonResponse
     {
-        $expenses = Expense::orderByDesc('id')->get();
-        return Helper::sendResponse($expenses);
+        $expenses = Expense::with('source')
+            ->orderByDesc('id')->get();
+        $sources = ExpenseSource::all();
+
+        $data = [
+            'expenses' => $expenses,
+            'sources' => $sources
+        ];
+
+        return Helper::sendResponse($data);
     }
 
     /**

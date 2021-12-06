@@ -88,7 +88,11 @@ export default defineComponent({
     const handleActionClose = () => data.selectedItem = {}
 
     onMounted(async () => {
-      await store.dispatch('expenseSource/getExpenseSource');
+
+      if(!store.getters["expenseSource/hasData"]){
+        await store.dispatch('expenseSource/getExpenseSource');
+      }
+
     })
     return {
       ...toRefs(data),

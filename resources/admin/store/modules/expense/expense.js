@@ -15,7 +15,15 @@ export default {
 
   getters: {
     ...getters,
-    data: (state) => isEmpty(state.data) ? [] : state.data
+    data: (state) => {
+
+      if(isEmpty(state.data)) return []
+
+      return state.data.map((item) => ({
+        ...item,
+        source: item?.source?.name || 'unspecified'
+      }))
+    }
   },
 
   mutations: {
@@ -25,12 +33,21 @@ export default {
   actions: {
     ...actions,
 
-    async getExpense({ dispatch }) {
+    async getExpense({ dispatch, state, rootGetters }) {
 
       try {
 
         const response = await Expense.get()
-        dispatch('setData', response.data.data)
+
+        dispatch('setData', response?.data?.data?.expenses)
+
+        if(!rootGetters["expenseSource/hasData"]){
+
+          dispatch('expenseSource/setData', response.data.data.sources, {root: true})
+
+        }
+
+        return response;
 
       } catch (e) {
 

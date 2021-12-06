@@ -12,6 +12,7 @@
       <ul>
         <nav-item :route=" routeMap.home "/>
         <nav-item :route=" routeMap.expenseSource "/>
+        <nav-item :route=" routeMap.expense "/>
       </ul>
     </nav>
   </aside>

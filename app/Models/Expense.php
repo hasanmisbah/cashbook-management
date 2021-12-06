@@ -16,4 +16,9 @@ class Expense extends Model
     {
         return $this->belongsTo(Organization::class);
     }
+
+    public function source(): BelongsTo
+    {
+        return $this->belongsTo(ExpenseSource::class);
+    }
 }

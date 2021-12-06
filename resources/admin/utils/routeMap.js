@@ -5,7 +5,7 @@ const routeMap = {
     login: {
       name: 'Login',
       title: 'Login',
-      path: '/login',
+      path: '/admin/login',
       icon: 'mdi mdi-home',
       permission: {
 
@@ -15,7 +15,7 @@ const routeMap = {
     register: {
       name: 'Register',
       title: 'Register',
-      path: '/register',
+      path: '/admin/register',
       icon: 'mdi mdi-home',
       permission: {
 
@@ -34,12 +34,22 @@ const routeMap = {
   expenseSource: {
         name: 'ExpenseSource',
         title: 'Expense Source',
-        path: '/expense-source',
+        path: 'admin/expense-source',
         icon: 'mdi mdi-database',
         permission: {
 
         },
-    }
+    },
+
+  expense: {
+    name: 'Expense',
+    title: 'Expense',
+    path: 'admin/expense',
+    icon: 'mdi mdi-account-convert',
+    permission: {
+
+    },
+  }
 }
 
 export default routeMap;

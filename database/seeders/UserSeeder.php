@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Expense;
 use App\Models\ExpenseSource;
 use App\Models\Organization;
 use App\Models\User;
@@ -27,12 +28,22 @@ class UserSeeder extends Seeder
         Organization::factory()
             ->count(1)
             ->state(['user_id' => $user->id ])
+
             ->afterCreating(function($organization){
+
                 ExpenseSource::factory()
                     ->count(50)
                     ->state([
                         'organization_id' => $organization->id
                     ])
+                    ->afterCreating(function($expenseSource) use($organization){
+
+                        Expense::factory()->count(30)->state([
+                            'organization_id' => $organization->id,
+                            'source_id' => $expenseSource->id
+                        ])->create();
+                    })
+
                     ->create()
                 ;
             })

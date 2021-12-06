@@ -10,6 +10,16 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault(APP_TIME_ZONE);
 
+const config = {
+  currencySign: '৳', // Currency Symbol For App `$ || £`
+  currency: 'BDT', // currency Name `GBP || USD`
+  locale: 'en-US', // BCP 47 language tag
+  // Documentation
+  // https://flaviocopes.com/how-to-format-number-as-currency-javascript/
+  dateFormat: 'DD-MMM-YYYY' // 01-jan-1990
+  // documentation @ https://day.js.org/docs/en/display/format
+}
+
 
 /**
  * @author Hasan Misbah
@@ -94,6 +104,17 @@ export const setToLocalStorage = (key, value, encode = true) => {
 
     return finalValue;
 };
+
+
+export const formatMoney = (value) => {
+
+  let formatter = new Intl.NumberFormat(config.locale, {
+    style: 'currency',
+    currency: config.currency,
+  });
+
+  return formatter.format(parseFloat(value));
+}
 
 /**
  * @param routeName {string | Array}

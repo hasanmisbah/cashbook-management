@@ -1,6 +1,6 @@
 <template>
   <li
-    :class="{active: isActiveRoute(route.name)}"
+    :class="{active: isActiveRoute(route.name, )}"
     class="nav-item"
   >
     <router-link :to="{ name: route.name }">

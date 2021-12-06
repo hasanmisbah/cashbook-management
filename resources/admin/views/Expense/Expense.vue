@@ -9,7 +9,7 @@
     <div v-loading="loading" class="card-body">
       <data-table
         :columns="columnMap"
-        :data="expenseSource"
+        :data="expenses"
         :action-handler="handleAction"
       />
     </div>
@@ -31,7 +31,7 @@ import DataTable from "../../Components/Utils/DataTable";
 import ButtonComp from "../../Components/Utils/ButtonComp";
 import { LIST_ITEM_ACTION_DELETE, LIST_ITEM_ACTION_UPDATE } from "../../utils/constants";
 import Notify from "../../utils/Notify";
-import { formatDate, formatDateTime } from "../../utils/helper";
+import { formatDate, formatDateTime, formatMoney } from "../../utils/helper";
 import ExpenseSourceAction from "../../Components/ExpenseSource/ExpenseSourceAction";
 
 export default defineComponent({
@@ -49,11 +49,13 @@ export default defineComponent({
       showModal: false,
 
       columnMap: [
-        { field: 'name', label: 'Name', sortable: true },
+        { field: 'source', label: 'Source', sortable: true },
+        { field: 'description', label: 'Description', sortable: true },
+        { field: 'amount', label: 'Amount', sortable: true, formatter: (value) => formatMoney(value) },
         { field: 'created_at', label: 'Created At', sortable: true, formatter: (value) => formatDateTime(value)},
       ],
 
-      expenseSource: computed(() => store.getters["expenseSource/data"]),
+      expenses: computed(() => store.getters["expense/data"]),
 
       selectedItem: {},
 
@@ -88,7 +90,9 @@ export default defineComponent({
     const handleActionClose = () => data.selectedItem = {}
 
     onMounted(async () => {
-      await store.dispatch('expenseSource/getExpenseSource');
+      if(!store.getters["expense/hasData"]){
+        await store.dispatch('expense/getExpense');
+      }
     })
     return {
       ...toRefs(data),
